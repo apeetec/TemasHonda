@@ -1,0 +1,30 @@
+# [ALTO-04] Bloquear acesso direto a arquivos sensíveis no diretório do tema
+
+# Bloquear extensões de arquivos que não devem ser acessíveis
+<FilesMatch "\.(md|csv|txt|log|bak|sql|sh|py|rb|json|lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Bloquear arquivos com prefixos de debug/utilitário
+<FilesMatch "^(debug-|test-|backup_|compare-)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Bloquear arquivos HTML avulsos (não são templates WordPress)
+<FilesMatch "\.html$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</FilesMatch>
