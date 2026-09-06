@@ -1,0 +1,270 @@
+<article class="container">
+    <?php
+    // Verifica se há mensagem de sucesso
+    global $form_submission_success;
+    $success_message = get_transient('form_success_' . $id_user . '_' . $sanitiza_term_name);
+    
+    if ($form_submission_success || $success_message) {
+        echo '<div class="success-message" style="background: #d4edda; color: #155724; padding: 15px; border: 1px solid #c3e6cb; border-radius: 4px; margin: 20px 0; font-weight: bold;">';
+        echo '<span style="font-size: 16px;">✅ ' . esc_html($success_message ?: 'Suas respostas foram salvas com sucesso!') . '</span>';
+        echo '<span id="refresh-countdown" style="display: block; font-size: 14px; margin-top: 8px; color: #0c5460;">Atualizando página em <strong>3</strong> segundos...</span>';
+        echo '</div>';
+        
+        // Script para refresh automático após 3 segundos com contagem regressiva
+        echo '<script>
+        (function() {
+            var countdown = 3;
+            var countdownElement = document.getElementById("refresh-countdown");
+            var countdownTimer = setInterval(function() {
+                countdown--;
+                if (countdownElement) {
+                    if (countdown > 0) {
+                        countdownElement.innerHTML = "Atualizando página em <strong>" + countdown + "</strong> segundo" + (countdown > 1 ? "s" : "") + "...";
+                    } else {
+                        countdownElement.innerHTML = "Atualizando agora...";
+                    }
+                }
+                if (countdown <= 0) {
+                    clearInterval(countdownTimer);
+                    window.location.reload();
+                }
+            }, 1000);
+        })();
+        </script>';
+        
+        // Remove o transient após exibir
+        if ($success_message) {
+            delete_transient('form_success_' . $id_user . '_' . $sanitiza_term_name);
+        }
+    }
+    ?>
+    
+    <?php 
+    // Mostra informações de debug apenas se solicitado via URL (?debug=1)
+    if (current_user_can('administrator') && isset($_GET['debug']) && $_GET['debug'] == '1') {
+        echo '<div style="background: #e8f4fd; padding: 15px; margin: 20px 0; border: 1px solid #bee5eb; border-radius: 4px;">';
+        echo '<h4>🔧 Sistema Debug</h4>';
+        echo '<strong>Status:</strong> ✅ Todos os campos funcionando corretamente<br>';
+        echo '<strong>Presencial:</strong> ' . (get_user_meta($id_user, 'presencial_' . $sanitiza_term_name, true) ?: 'Não definido') . '<br>';
+        echo '<strong>Respostas:</strong> ' . (get_user_meta($id_user, 'todas_alternativa_' . $sanitiza_term_name, true) ? 'Completo' : 'Pendente') . '<br>';
+        
+        $pontuacao_debug = get_user_meta($id_user, 'pontuacao_' . $sanitiza_term_name, true);
+        $percentual_debug = get_user_meta($id_user, 'percentual_' . $sanitiza_term_name, true);
+        echo '<strong>Pontuação:</strong> ' . ($pontuacao_debug ?: 'Não calculada') . '<br>';
+        echo '<strong>Percentual:</strong> ' . ($percentual_debug ? $percentual_debug . '%' : 'Não calculado') . '<br>';
+        echo '<strong>Todas corretas:</strong> ' . (get_user_meta($id_user, 'acertou_todas_alternativas_' . $sanitiza_term_name, true) ? 'SIM' : 'NÃO') . '<br>';
+        echo '</div>';
+    }
+    ?>
+    
+    <div class="box-perguntas <?php if(!empty($checagem)){ echo 'ativo';} ?>" id="perguntas_<?php echo $codigo;?>">
+        <form action="" method="post" name="<?php echo $sanitiza_term_name;?>">
+            <input type="hidden" name="slug_id" value="<?php echo esc_attr($term_id);?>">
+            <input class="presencial" id="presencial_<?php echo esc_attr($codigo);?>" type="hidden" name="presencial[<?php echo esc_attr($sanitiza_term_name);?>]" value="Não presencial">
+            <?php
+                // Inicializa arrays para armazenar respostas
+                $todasRespostacorretas = [];
+                $todasRespostausuario = [];
+
+                // Argumentos para buscar perguntas da categoria
+                $args = [
+                    'post_type' => 'perguntas',
+                    'posts_per_page' => -1,
+                    'post_status' => 'publish',
+                    'tax_query' => [
+                        [
+                            'taxonomy' => 'datas_perguntas',
+                            'field'    => 'term_id',
+                            'terms'    => $term_id,
+                            'include_children' => false,
+                        ],
+                    ],
+                ];
+
+                // Execute a query
+                $query = new WP_Query($args);
+                
+                if ($query->have_posts()) {
+                    while ($query->have_posts()) {
+                        $query->the_post();
+                        $post_id = get_the_ID();
+                        
+                        // Recebe a resposta do usuário
+                        $resposta_do_usuario = get_user_meta($id_user, 'user_field_'.$sanitiza_term_name.'_'.$post_id, true);
+                        $todasRespostausuario[] = $resposta_do_usuario;
+                        
+                        // Questão
+                        $questao = get_the_title($post_id);
+                        
+                        // Grupo de alternativas
+                        $grupo_alternativas = get_post_meta($post_id, 'grupo_de_respostas', true);
+                        
+                        // Verifica se há alternativas válidas
+                        if (!is_array($grupo_alternativas) || empty($grupo_alternativas)) {
+                            continue;
+                        }
+            ?>
+                <div class="questao-container">
+                    <p class="questao">
+                        <?php echo esc_html($questao);?>
+                    </p>
+                    
+                    <?php
+                    // Loop pelas alternativas
+                    $tem_sugestao = false;
+                    
+                    foreach ($grupo_alternativas as $index => $entrada) {
+                        // Validação dos dados da entrada
+                        if (!is_array($entrada)) {
+                            continue;
+                        }
+                        
+                        $alternativa = isset($entrada['alternativa']) ? trim($entrada['alternativa']) : '';
+                        $sugestao_texto = isset($entrada['sugestao']) ? trim($entrada['sugestao']) : '';
+                        $alternativa_correta = !empty($entrada['alternativa_correta']) ? 'Alternativa correta' : '';
+                        
+                        // Pula se a alternativa estiver vazia
+                        if (empty($alternativa)) {
+                            continue;
+                        }
+                        
+                        // Verifica se é a resposta do usuário
+                        $msg = ($alternativa == $resposta_do_usuario) ? "- (Sua resposta)" : "";
+                        
+                        // Adiciona à lista de respostas corretas
+                        if (!empty($entrada['alternativa_correta'])) {
+                            $todasRespostacorretas[] = $alternativa;
+                        }
+                        
+                        // Verifica se há campo de sugestão
+                        $tem_sugestao = !empty($sugestao_texto);
+                    ?>
+                        <div class="alternativa-container">
+                            <label>
+                                <?php if (empty($checagem) && !$tem_sugestao) { ?>
+                                    <input 
+                                        id="alternativa_<?php echo esc_attr($post_id.'_'.$index); ?>" 
+                                        name="resp_video[<?php echo esc_attr($post_id); ?>]" 
+                                        type="radio" 
+                                        value="<?php echo esc_attr($alternativa); ?>" 
+                                        <?php checked($resposta_do_usuario, $alternativa); ?>
+                                        required
+                                    />
+                                <?php } ?>
+                                <span class="alternativa">
+                                    <?php echo esc_html($alternativa); ?>
+                                    <?php if (!empty($checagem)) { ?>
+                                        <small class="user-answer"><?php echo esc_html($msg); ?></small>
+                                    <?php } ?>
+                                    <?php if (!empty($checagem) && !empty($alternativa_correta)) { ?>
+                                        <small class="teal-text darken-4"><?php echo esc_html($alternativa_correta); ?></small>
+                                    <?php } ?>
+                                </span>
+                            </label>
+                            
+                            <?php if ($tem_sugestao) { 
+                                $sugestao_salva = get_user_meta($id_user, 'sugestao_pergunta_'.$sanitiza_term_name.'_'.$post_id, true);
+                            ?>
+                                <div class="sugestao-field">
+                                    <label for="sugestao_<?php echo esc_attr($post_id); ?>">
+                                        <?php echo esc_html($sugestao_texto); ?>
+                                        <?php if (current_user_can('administrator')) { ?>
+                                            <small style="color: #666; font-weight: normal;">
+                                                (Campo: sugestao_<?php echo $post_id; ?> | Meta: sugestao_pergunta_<?php echo $sanitiza_term_name; ?>_<?php echo $post_id; ?>)
+                                            </small>
+                                        <?php } ?>
+                                    </label>
+                                    <textarea 
+                                        name="sugestao_<?php echo esc_attr($post_id); ?>" 
+                                        id="sugestao_<?php echo esc_attr($post_id); ?>" 
+                                        class="form-control"
+                                        placeholder=""
+                                        <?php echo empty($checagem) ? '' : 'readonly'; ?>
+                                    ><?php echo esc_textarea($sugestao_salva); ?></textarea>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    <?php
+                    } // Fim do loop de alternativas
+                    ?>
+                </div>
+            <?php
+                    } // Fim do loop de perguntas
+                } // Fim do if have_posts
+                wp_reset_postdata();
+                
+                // Sistema de debug e validação (visível apenas para administradores)
+                ESG_Debug::show_debug_info($id_user, $sanitiza_term_name, $term_id);
+                ESG_Debug::validate_form_integrity($term_id);
+                
+                // Log da renderização do formulário
+                esg_log('Formulário renderizado', [
+                    'user_id' => $id_user,
+                    'term_name' => $sanitiza_term_name,
+                    'term_id' => $term_id,
+                    'total_perguntas' => $query->found_posts
+                ]);
+            ?>
+            <?php if (empty($checagem)) { ?>
+                <div class="submit-container">
+                    <input type="submit" name="<?php echo esc_attr($sanitiza_term_name);?>" value="Enviar Respostas" class="btn-submit" id="submit-btn-<?php echo esc_attr($sanitiza_term_name);?>">
+                    <div class="loading-indicator" id="loading-<?php echo esc_attr($sanitiza_term_name);?>" style="display:none; margin-top: 10px;">
+                        <span>🔄 Salvando suas respostas...</span>
+                    </div>
+                </div>
+            <?php } else {
+                // Mostra resultado salvo da pontuação
+                $pontuacao_salva = get_user_meta($id_user, 'pontuacao_' . $sanitiza_term_name, true);
+                $percentual_salvo = get_user_meta($id_user, 'percentual_' . $sanitiza_term_name, true);
+                
+                if (!empty($pontuacao_salva)) {
+                    echo '<div class="resultado-container">';
+                    echo '<p class="resultado">Você acertou ' . esc_html($pontuacao_salva) . ' perguntas';
+                    
+                    if (!empty($percentual_salvo)) {
+                        echo ' (' . esc_html($percentual_salvo) . '%)';
+                    }
+                    
+                    echo '.</p>';
+                    
+                    // Mostra se acertou todas
+                    $acertou_todas = get_user_meta($id_user, 'acertou_todas_alternativas_' . $sanitiza_term_name, true);
+                    if (!empty($acertou_todas)) {
+                        echo '<p class="resultado-perfeito" style="color: #28a745; font-weight: bold;">🎉 Parabéns! Você acertou todas as perguntas!</p>';
+                    }
+                    
+                    echo '</div>';
+                } else {
+                    // Fallback: calcula na visualização (compatibilidade)
+                    $total_corretas = count($todasRespostacorretas);
+                    $acertos_visualizacao = 0;
+                    
+                    if ($total_corretas > 0) {
+                        // Calcula acertos corretamente por pergunta
+                        $query_temp = new WP_Query($args);
+                        $pergunta_index = 0;
+                        
+                        if ($query_temp->have_posts()) {
+                            while ($query_temp->have_posts()) {
+                                $query_temp->the_post();
+                                $post_id_temp = get_the_ID();
+                                
+                                if (isset($todasRespostausuario[$pergunta_index]) && isset($todasRespostacorretas[$pergunta_index])) {
+                                    if ($todasRespostausuario[$pergunta_index] == $todasRespostacorretas[$pergunta_index]) {
+                                        $acertos_visualizacao++;
+                                    }
+                                }
+                                $pergunta_index++;
+                            }
+                        }
+                        wp_reset_postdata();
+                        
+                        echo '<div class="resultado-container">';
+                        echo '<p class="resultado">Você acertou ' . $acertos_visualizacao . ' de ' . $total_corretas . ' perguntas.</p>';
+                        echo '</div>';
+                    }
+                }
+            } ?>
+        </form>
+    </div>
+</article>

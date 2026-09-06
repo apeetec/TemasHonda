@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug - Sistema de Exclusão</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .info { background: #cce7ff; border: 1px solid #99d6ff; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Debug - Sistema de Exclusão</h1>
+    
+    <div class="test info">
+        <h3>📋 Verificações do Sistema</h3>
+        <div id="checks"></div>
+    </div>
+
+    <div class="test info">
+        <h3>🧪 Teste de Conectividade</h3>
+        <button onclick="testConnection()">Testar Conexão com Backend</button>
+        <div id="connection-result"></div>
+    </div>
+
+    <script>
+        // Verifica se todos os elementos existem
+        function checkElements() {
+            const checks = document.getElementById('checks');
+            const elements = [
+                'import-tab',
+                'delete-tab', 
+                'deleteCsvFile',
+                'btnDelete',
+                'btnDownloadDeleteTemplate'
+            ];
+
+            let html = '<ul>';
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    html += `<li>✅ ${id}: OK</li>`;
+                } else {
+                    html += `<li>❌ ${id}: NÃO ENCONTRADO</li>`;
+                }
+            });
+            html += '</ul>';
+            
+            checks.innerHTML = html;
+        }
+
+        // Testa conexão com o backend
+        async function testConnection() {
+            const resultDiv = document.getElementById('connection-result');
+            resultDiv.innerHTML = '<p>🔄 Testando conexão...</p>';
+
+            try {
+                // Testa com GET primeiro (deve retornar erro 405 - método não permitido)
+                const response = await fetch('/sipat/wp-content/themes/esg/sql/excluir-usuarios.php', {
+                    method: 'GET'
+                });
+
+                const result = await response.text();
+                
+                if (response.status === 405) {
+                    resultDiv.innerHTML = `
+                        <p class="success">✅ Backend está funcionando!</p>
+                        <p><strong>Status:</strong> ${response.status} (Método não permitido - correto)</p>
+                        <p><strong>Resposta:</strong> ${result}</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <p class="error">⚠️ Resposta inesperada do backend</p>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Resposta:</strong> ${result}</p>
+                    `;
+                }
+
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">❌ Erro de conectividade</p>
+                    <p><strong>Erro:</strong> ${error.message}</p>
+                `;
+            }
+        }
+
+        // Executa verificações ao carregar
+        window.onload = () => {
+            checkElements();
+        };
+    </script>
+</body>
+</html>

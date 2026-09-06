@@ -1,0 +1,12 @@
+user_login;user_email
+exemplo.usuario1;usuario1@empresa.com
+exemplo.usuario2;usuario2@empresa.com
+;; INSTRUÇÕES DE USO:
+;; 1. Preencha user_login OU user_email (não precisa dos dois)
+;; 2. Deixe em branco a coluna que não for usar
+;; 3. Linhas que começam com ;; são comentários (ignoradas)
+;; 4. CUIDADO: Esta operação é IRREVERSÍVEL!
+;; Exemplos de uso:
+joao.silva;
+;maria@empresa.com
+carlos.santos;carlos@empresa.com

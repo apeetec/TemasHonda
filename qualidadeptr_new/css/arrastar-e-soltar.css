@@ -1,0 +1,315 @@
+
+#game {
+    display: grid;
+    grid-template-columns: 216px 835px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    height: 660px;
+}
+
+#sidebar {
+    width: 100%;
+    background-color: #3367ab;
+    padding: 10px;
+}
+
+.draggable {
+    cursor: grab;
+    height: 80px;
+    width: 80px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 0 auto;
+    /* padding: 15px; */
+    display: grid;
+    place-items: center;
+    background-color: #fff;
+}
+.draggable img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+.drop-zone {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #ccc;
+    margin: 20px;
+    display: inline-block;
+}
+
+#info {
+    margin-top: 20px;
+}
+
+    #play-area {
+        position: relative;
+        width: 100%;
+        border: 1px solid #000;
+        background-image: url('./img/imagem-com-os-buracos.jpg');
+    }
+    #play-area img{width: 100%;display: block;height: 100%;}
+    .drop-zone {
+        position: absolute;
+        border: 2px dashed #ccc;
+        z-index: 1;
+    }
+    #final-image {
+        display: none;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+@media screen and (max-width:992px){
+    #play-area.finalizado {
+        overflow-x: scroll;
+    }
+    #play-area.finalizado img {
+        width: 100%;
+        height: unset;
+    }
+    .page-template-jogo-arrastar main{padding: 0 1rem;}
+}
+#hint-box {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    display: none;
+    font-size:1.5rem;
+}
+.draggable img{pointer-events:none!important;}
+.modal{width: 100%!important;max-height:100%!important;border-radius:0!important;}
+.modal .close{position: absolute;top:20px;right:20px;}
+
+/* .drop-zone-1,.drop-zone #item1{left: 630px;bottom: 111px;height: 172px;width: 117px; border-radius: 0;}
+.drop-zone-2,.drop-zone #item2 {top: 0px;left: 202px;height: 100px;width: 301px;border-radius: 0}
+.drop-zone-3, .drop-zone #item3 {top: -2px;left: 515px;width: 88px;height: 196px;border-radius: 0}
+.drop-zone-4,.drop-zone-4 #item4 {top: 377px;left: 474px;width: 124px;height: 142px;border-radius: 0}
+.drop-zone-5,.drop-zone #item5 {top: 311px;left: 346px;width: 95px;height: 196px;border-radius: 0}
+.drop-zone-6,.drop-zone #item6 {top: 423px;left: 5px;height: 115px;width: 185px;border-radius: 0}
+.drop-zone-7,.drop-zone #item7 {top: 292px;left: 194px;width: 53px;height: 105px;border-radius: 0} */
+
+.drop-zone-1,.drop-zone #item1{top: 0px;left: 202px;height: 100px;width: 301px;border-radius: 0;}
+.drop-zone-2,.drop-zone #item2 {top: 423px;left: 5px;height: 115px;width: 185px;border-radius: 0}
+.drop-zone-3, .drop-zone #item3 {top: 292px;left: 194px;width: 53px;height: 105px;border-radius: 0}
+.drop-zone-4,.drop-zone-4 #item4 {top: 377px;left: 474px;width: 124px;height: 142px;border-radius: 0}
+.drop-zone-5,.drop-zone #item5 {top: -2px;right: 193px;width: 85px;height: 198px;border-radius: 0;}
+.drop-zone-6,.drop-zone #item6 {top: 312px;left: 342px;height: 195px;width: 96px;border-radius: 0;}
+.drop-zone-7,.drop-zone #item7 {right: 44px;bottom: 110px;width: 120px;height: 172px;border-radius: 0;}
+
+.drop-zone .draggable{border-radius: 0;width: 100%!important;height: 100%!important;}
+.drop-zone img{object-fit: fill;}
+.drop-zone #item1 img{object-fit: fill;}
+.drop-zone #item2 img{object-fit: fill;}
+.drop-zone #item3 img{object-fit: fill;}
+.drop-zone-4 #item4 img{object-fit: fill;}
+.drop-zone #item5 img{object-fit: fill;}
+.drop-zone #item6 img{object-fit: fill;}
+.drop-zone #item7 img{object-fit: fill;}
+
+
+@media screen and (max-width:992px){
+    /* html,body{overflow-y: hidden;} */
+    /* .page-template-jogo-arrastar .banner-top{display: none;} */
+    #sidebar {
+        width: 100%;
+        background-color: #3367ab;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 10px;
+    }
+    #game {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 456px;
+        max-width: 705px;
+    }
+    .drop-zone{width: 50px;height: 50px;}
+    .drop-zone-1 {
+        left: 167px;
+        bottom: unset;
+        top: -5px;
+        height: 67px;
+        width: 255px;
+    }
+    .drop-zone-2 {
+        top: unset;
+        left: 0;
+        bottom: 50px;
+        height: 80px;
+        width: 158px;
+    }
+    .drop-zone-3 {
+        top: 196px;
+        left: 159px;
+        width: 47px;
+        height: 74px;
+    }
+    .drop-zone-4 {
+        top: 255px;
+        left: 397px;
+        width: 105px;
+        height: 97px;
+    }
+    .drop-zone-5 {
+        top: -8px;
+        left: 428px;
+        width: 79px;
+        height: 136px;
+    }
+    .drop-zone-6 {
+        top: 209px;
+        left: 285px;
+        width: 81px;
+        height: 136px;
+    }
+    .drop-zone-7 {
+        top: unset;
+        left: unset;
+        right: 33px;
+        bottom: 69px;
+        width: 103px;
+        height: 121px;
+    }
+    .drop-zone-8 {
+        top: 194px;
+        left: 215px;
+    }
+}
+
+@media screen and (max-width:780px){
+    #sidebar {
+        width: 100%;
+        background-color: #3367ab;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 10px;
+    }
+    #game {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 456px;
+        max-width: 605px;
+    }
+    .drop-zone{
+        width: 50px;
+        height: 50px;
+    }
+    
+    .drop-zone-1 {
+        left: 107px;
+        bottom: unset;
+        top: -4px;
+        height: 67px;
+        width: 178px;
+    }
+    .drop-zone-2 {
+        top: unset;
+        left: -6px;
+        bottom: 50px;
+        height: 79px;
+        width: 109px;
+    }
+    .drop-zone-3 {
+        top: 196px;
+        left: 104px;
+        width: 32px;
+        height: 73px;
+    }
+    .drop-zone-4 {
+        top: 256px;
+        left: 265px;
+        width: 75px;
+        height: 96px;
+    }
+    .drop-zone-5 {
+        top: -8px;
+        left: unset;
+        right: 102px;
+        width: 53px;
+        height: 137px;
+    }
+    .drop-zone-6 {
+        top: 209px;
+        left: 192px;
+        width: 53px;
+        height: 135px;
+    }
+    .drop-zone-7 {
+        top: 224px;
+        left: unset;
+        right: 18px;
+        width: 70px;
+        height: 121px;
+    }
+    .drop-zone-8 {
+        top: 194px;
+        left: 178px;
+    }
+}
+
+@media screen and (max-width:480px){
+    #game{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 456px;
+        max-width: 372px;
+    }
+    #sidebar{display: grid;grid-template-columns: repeat(4, 1fr);}
+    /* .drop-zone{width: 30px;height: 30px;} */
+    .draggable{
+        width: 50px;
+        height: 50px;
+    }
+    .drop-zone-1 {
+        left: 79px;
+        bottom: unset;
+        top: -4px;
+        height: 66px;
+        width: 134px;
+    }
+    .drop-zone-2 {
+        bottom: 50px;
+        left: -9px;
+        top: unset;
+        width: 85px;
+        height: 79px;
+    }
+    .drop-zone-3 {
+        top: 197px;
+        left: 74px;
+        width: 26px;
+        height: 72px;
+    }
+    .drop-zone-4 {
+        top: 254px;
+        left: 199px;
+        width: 57px;
+        height: 97px;
+    }
+    .drop-zone-5 {
+        top: -7px;
+        left: 217px;
+        width: 40px;
+        height: 135px;
+    }
+    .drop-zone-6 {
+        top: 207px;
+        left: 141px;
+        width: 45px;
+        height: 137px;
+    }
+    .drop-zone-7 {
+        top: 224px;
+        left: unset;
+        right: 8px;
+        width: 54px;
+        height: 122px;
+    }
+    .drop-zone-8 {
+        top: 193px;
+        left: 93px;
+    }
+}

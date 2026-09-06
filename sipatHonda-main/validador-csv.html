@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de CSV - Importação de Usuários</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .upload-area.dragover {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .results {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ddd;
+        }
+
+        .result-card.success {
+            border-color: #27ae60;
+            background: #e8f5e8;
+        }
+
+        .result-card.error {
+            border-color: #e74c3c;
+            background: #ffe6e6;
+        }
+
+        .result-card.warning {
+            border-color: #f39c12;
+            background: #fff8e1;
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-content {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .error-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .error-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .download-template {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn-template {
+            background: #27ae60;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-template:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Validador de CSV</h1>
+            <p>Valide seu arquivo antes da importação de usuários</p>
+        </div>
+
+        <div class="content">
+            <div class="download-template">
+                <p>Não tem um arquivo CSV? Baixe nosso template:</p>
+                <a href="template-usuarios.csv" class="btn-template" download>
+                    📥 Download Template CSV
+                </a>
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div>
+                    <h3>📁 Selecione ou arraste seu arquivo CSV</h3>
+                    <p style="margin: 15px 0; color: #666;">
+                        Formatos aceitos: .csv (máximo 10MB)
+                    </p>
+                    <input type="file" id="csvFile" accept=".csv">
+                    <button class="upload-btn" onclick="document.getElementById('csvFile').click()">
+                        Selecionar Arquivo
+                    </button>
+                </div>
+            </div>
+
+            <div class="results" id="results">
+                <div class="stats" id="stats"></div>
+                <div id="validationResults"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class CSVValidator {
+            constructor() {
+                this.setupEventListeners();
+                this.requiredFields = ['user_login', 'user_email', 'user_pass'];
+                this.optionalFields = ['first_name', 'last_name', 'display_name', 'user_infos_empresas', 
+                                     'unidade_usuario', 'empresa_usuario', 'comentario', 
+                                     'user_field_senha_alterada', 'description'];
+                this.errors = [];
+                this.warnings = [];
+                this.stats = {
+                    totalRows: 0,
+                    validRows: 0,
+                    errorRows: 0,
+                    duplicateEmails: 0,
+                    duplicateLogins: 0
+                };
+            }
+
+            setupEventListeners() {
+                const fileInput = document.getElementById('csvFile');
+                const uploadArea = document.getElementById('uploadArea');
+
+                fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+                
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+
+                uploadArea.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                });
+
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        this.processFile(files[0]);
+                    }
+                });
+            }
+
+            handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    this.processFile(file);
+                }
+            }
+
+            processFile(file) {
+                // Reset
+                this.errors = [];
+                this.warnings = [];
+                this.stats = {
+                    totalRows: 0,
+                    validRows: 0,
+                    errorRows: 0,
+                    duplicateEmails: 0,
+                    duplicateLogins: 0
+                };
+
+                // Validações básicas
+                if (!file.name.toLowerCase().endsWith('.csv')) {
+                    this.showError('Apenas arquivos CSV são aceitos!');
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) {
+                    this.showError('Arquivo muito grande! Máximo 10MB permitido.');
+                    return;
+                }
+
+                // Lê o arquivo
+                const reader = new FileReader();
+                reader.onload = (e) => this.validateCSV(e.target.result);
+                reader.readAsText(file, 'UTF-8');
+            }
+
+            validateCSV(content) {
+                const lines = content.split('\n').filter(line => line.trim());
+                
+                if (lines.length === 0) {
+                    this.showError('Arquivo CSV vazio!');
+                    return;
+                }
+
+                // Valida cabeçalho
+                const headers = this.parseCSVLine(lines[0]);
+                this.validateHeaders(headers);
+
+                // Valida dados
+                const emails = new Set();
+                const logins = new Set();
+
+                for (let i = 1; i < lines.length; i++) {
+                    const data = this.parseCSVLine(lines[i]);
+                    const rowData = this.createRowObject(headers, data);
+                    
+                    this.stats.totalRows++;
+                    
+                    if (this.validateRow(rowData, i + 1, emails, logins)) {
+                        this.stats.validRows++;
+                    } else {
+                        this.stats.errorRows++;
+                    }
+                }
+
+                this.showResults();
+            }
+
+            parseCSVLine(line) {
+                const result = [];
+                let inQuotes = false;
+                let current = '';
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ';' && !inQuotes) {
+                        result.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                
+                result.push(current.trim());
+                return result;
+            }
+
+            createRowObject(headers, data) {
+                const obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = data[index] || '';
+                });
+                return obj;
+            }
+
+            validateHeaders(headers) {
+                // Verifica campos obrigatórios
+                for (const field of this.requiredFields) {
+                    if (!headers.includes(field)) {
+                        this.errors.push(`Campo obrigatório ausente: ${field}`);
+                    }
+                }
+
+                // Verifica campos desconhecidos
+                const allKnownFields = [...this.requiredFields, ...this.optionalFields];
+                for (const header of headers) {
+                    if (!allKnownFields.includes(header) && header.trim() !== '') {
+                        this.warnings.push(`Campo desconhecido encontrado: ${header}`);
+                    }
+                }
+            }
+
+            validateRow(data, rowNumber, emails, logins) {
+                let isValid = true;
+
+                // Email obrigatório e válido
+                if (!data.user_email) {
+                    this.errors.push(`Linha ${rowNumber}: Email é obrigatório`);
+                    isValid = false;
+                } else if (!this.isValidEmail(data.user_email)) {
+                    this.errors.push(`Linha ${rowNumber}: Email inválido - ${data.user_email}`);
+                    isValid = false;
+                } else if (emails.has(data.user_email)) {
+                    this.errors.push(`Linha ${rowNumber}: Email duplicado - ${data.user_email}`);
+                    this.stats.duplicateEmails++;
+                    isValid = false;
+                } else {
+                    emails.add(data.user_email);
+                }
+
+                // Login obrigatório e válido
+                if (!data.user_login) {
+                    this.errors.push(`Linha ${rowNumber}: User login é obrigatório`);
+                    isValid = false;
+                } else if (!this.isValidUsername(data.user_login)) {
+                    this.errors.push(`Linha ${rowNumber}: User login inválido - ${data.user_login}`);
+                    isValid = false;
+                } else if (logins.has(data.user_login)) {
+                    this.errors.push(`Linha ${rowNumber}: User login duplicado - ${data.user_login}`);
+                    this.stats.duplicateLogins++;
+                    isValid = false;
+                } else {
+                    logins.add(data.user_login);
+                }
+
+                // Senha obrigatória
+                if (!data.user_pass) {
+                    this.errors.push(`Linha ${rowNumber}: Senha é obrigatória`);
+                    isValid = false;
+                } else if (data.user_pass.length < 6) {
+                    this.warnings.push(`Linha ${rowNumber}: Senha muito curta (recomendado mínimo 6 caracteres)`);
+                }
+
+                // Validações de campo opcionais
+                if (data.user_field_senha_alterada && !['Sim', 'Não'].includes(data.user_field_senha_alterada)) {
+                    this.warnings.push(`Linha ${rowNumber}: Campo 'senha_alterada' deve ser 'Sim' ou 'Não'`);
+                }
+
+                return isValid;
+            }
+
+            isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            isValidUsername(username) {
+                const re = /^[a-zA-Z0-9._-]+$/;
+                return re.test(username) && username.length >= 3;
+            }
+
+            showResults() {
+                const resultsDiv = document.getElementById('results');
+                const statsDiv = document.getElementById('stats');
+                const validationDiv = document.getElementById('validationResults');
+
+                // Estatísticas
+                statsDiv.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${this.stats.totalRows}</div>
+                        <div class="stat-label">Total de Linhas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #27ae60">${this.stats.validRows}</div>
+                        <div class="stat-label">Linhas Válidas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #e74c3c">${this.stats.errorRows}</div>
+                        <div class="stat-label">Linhas com Erro</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" style="color: #f39c12">${this.warnings.length}</div>
+                        <div class="stat-label">Avisos</div>
+                    </div>
+                `;
+
+                // Resultados
+                validationDiv.innerHTML = '';
+
+                // Card de status geral
+                const hasErrors = this.errors.length > 0;
+                const statusCard = document.createElement('div');
+                statusCard.className = `result-card ${hasErrors ? 'error' : 'success'}`;
+                statusCard.innerHTML = `
+                    <div class="result-title">
+                        ${hasErrors ? '❌' : '✅'} Status da Validação
+                    </div>
+                    <div class="result-content">
+                        ${hasErrors ? 
+                            'Arquivo contém erros que devem ser corrigidos antes da importação.' : 
+                            'Arquivo válido! Pronto para importação.'}
+                    </div>
+                `;
+                validationDiv.appendChild(statusCard);
+
+                // Erros
+                if (this.errors.length > 0) {
+                    const errorCard = document.createElement('div');
+                    errorCard.className = 'result-card error';
+                    errorCard.innerHTML = `
+                        <div class="result-title">
+                            🚫 Erros Encontrados (${this.errors.length})
+                        </div>
+                        <div class="result-content">
+                            <div class="error-list">
+                                ${this.errors.map(error => `<div class="error-item">${error}</div>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                    validationDiv.appendChild(errorCard);
+                }
+
+                // Avisos
+                if (this.warnings.length > 0) {
+                    const warningCard = document.createElement('div');
+                    warningCard.className = 'result-card warning';
+                    warningCard.innerHTML = `
+                        <div class="result-title">
+                            ⚠️ Avisos (${this.warnings.length})
+                        </div>
+                        <div class="result-content">
+                            <div class="error-list">
+                                ${this.warnings.map(warning => `<div class="error-item">${warning}</div>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                    validationDiv.appendChild(warningCard);
+                }
+
+                resultsDiv.style.display = 'block';
+            }
+
+            showError(message) {
+                const resultsDiv = document.getElementById('results');
+                const validationDiv = document.getElementById('validationResults');
+                
+                validationDiv.innerHTML = `
+                    <div class="result-card error">
+                        <div class="result-title">❌ Erro</div>
+                        <div class="result-content">${message}</div>
+                    </div>
+                `;
+                
+                resultsDiv.style.display = 'block';
+            }
+        }
+
+        // Inicializa o validador
+        document.addEventListener('DOMContentLoaded', function() {
+            new CSVValidator();
+        });
+    </script>
+</body>
+</html>

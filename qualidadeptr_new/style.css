@@ -1,0 +1,143 @@
+/*
+Theme Name: (Novo Tema Qualidade PTR - Atual)
+*/
+*{ font-family: "Inter", sans-serif;}
+nav ul:not(.dropdown-content) > li > a.btn{height:100%!important;}
+body{display: flex;min-height: 100vh;flex-direction: column;background-color: #e2e8e8;}
+.container{width: 100%!important;padding: 0 2rem!important;}
+main{flex: 1 0 auto;padding: 20px 0;}
+nav ul li a{color: #000!important;}
+span.wpcf7-list-item { display: block; }
+.wpcf7-textarea{border: 1px solid #000;outline: none;margin-top: 40px;padding: 10px;background-color: #fff;height: 10rem!important;}
+.date-info{display: none!important;}
+.destaque{padding: 30px 15px 5px 15px;background-color: #dadde0;border-radius: 10px;}
+#matricula{display: none;}
+.texto{font-size: 1.1rem;}
+/* nav{position: relative;width: 100%;z-index: 1;border-bottom: 1px solid #fff3;} */
+.sidenav li{float: none!important;}
+ul{padding: 0;margin: 0;list-style: none;}
+.modal-close{position: absolute;top: 0;right: 0;background-color: #323f3c;color: #f9fafb;}
+h1,h2,h3,h4,h5,h6,p,ul li a,a,span,label,small,input,figcaption{ font-family: "Inter", sans-serif;}
+/* .banner-top img{display: block;} */
+.banner-top .mobile-banner{display:none;}
+.five-grid{display: grid;grid-template-columns: repeat(5,1fr);}
+.five-grid a{width: 100%;}
+.five-grid a img{display: block;width: 100%;}
+.mejs-overlay-button,.mejs-controls{display: none!important;}
+.wp-video{pointer-events: none!important;}
+.space-top{padding-top: 70px;}
+.date-info{border: 1px solid rgba(16 18 27 / 40%);display: flex;padding: 20px;border-radius: 4px;margin-top: 70px;align-items: center;}
+.date-info .calendar {background-color: #0a328b;padding: 10px;color: #f9fafb;}
+.date-info h4{margin: 0;}
+.blue_text{color: #3367ab;}
+/* .atracao {display: flex;justify-content: space-between;padding: 20px;background: #323f3c;border-radius: 4px;color: #f9fafb;} */
+.atracao {display: none;justify-content: space-between;padding: 20px;background: #323f3c;border-radius: 4px;color: #f9fafb;}
+.status{display:none;}
+.video-box{margin-top: 10px;}
+.data-liberacao{font-size: 2rem;}
+.page-login{max-width: 680px;width: 100%;display: block;margin: 0 auto;padding: 150px 0;}
+.page-login .container{padding: 2rem!important;background-color: #323f3c;}
+.page-login .container span{color: #fff!important;}
+.term-palestra #form-check,.term-palestra p.space-top.term-palestra .atracao,.tax-datas_perguntas.term-5s #form-check{display:none;}
+.tax-datas_perguntas.term-5s p.space-top,.term-palestra p.space-top{display:none;}
+.term-fundicao #form-check ,.term-fundicao p.space-top, .term-fundicao .atracao,.term-fundicao #box-escolha{display: none;}
+.term-usinagem #form-check ,.term-usinagem #form-check ,.term-usinagem p.space-top, .term-usinagem .atracao,.term-fundiusinagemcao #box-escolha{display: none;}
+.term-montagem-de-motor #form-check,.term-montagem-de-motor p.space-top, .term-montagem-de-motor .atracao,.term-montagem-de-motor #box-escolha{display: none;}
+/* Digitar código */
+form.space-top{padding-top: 20px;}
+/* Bloco de questão */
+.questao{background-color: #323f3c;padding: 20px;color: #fff;font-weight: 550;border-radius: 3px;}
+.alternativa{font-weight: 550;color: #000;font-size: 1.1rem;letter-spacing: 1px;}
+.box-codigo,.box-perguntas{display: none;}
+.box-perguntas{padding: 50px 0;}
+.box-perguntas.ativo{display: block;}
+.box-codigo p strong{font-weight: bold;font-size: 1.2rem;}
+[type=submit]{background-color: #66bd39;color: #e2e8e8;border: none;padding: 20px;display: block;max-width: 220px;width: 100%;margin-top: 20px;}
+[type=submit]:hover{cursor: pointer;}
+/* Bloco de videos */
+.video-box{max-width: 780px;width: 100%;}
+.buttons-play-and-pause{display: flex;justify-content: start;gap: 0 40px;}
+.buttons-play-and-pause p{height: 80px;width: 80px;background-color: #0a328b;color: #fff;display: grid;place-items: center;border-radius: 50px;}
+.buttons-play-and-pause p:hover{cursor: pointer;}
+.progress-bar{height: 10px;width: 100%;}
+.progress-bar .line{height: 100%;}
+.contact-box{margin-top: 40px;}
+.contact-box p{display: block;max-width: 250px;margin: 10px auto;}
+.contact-box [type=submit]{width: 100%;max-width: 100%;}
+.page-template-jogo-arrastar, .page-template-template-oito-erros,.page-template-login,.page-template-template-oito-erros-fnd,.page-template-template-oito-erros-usi,.page-template-template-oito-erros-mmo {
+    background-image: url('https://qualidadeptr.com.br/wp-content/uploads/2025/10/fundo_jogo.jpg');
+    background-position: center;
+    background-size: cover;
+}
+.infos .btn-large{background-color: #0a328b;color: #fff;width: 100%;text-align: center;justify-content: center;}
+
+.page-template-jogo-arrastar main,.page-template-template-oito-erros main,.page-template-login main,.page-template-template-oito-erros-fnd main,.page-template-template-oito-erros-usi main,.page-template-template-oito-erros-mmo main{background-color: transparent!important;}
+.page-template-login main{display: flex;align-items: center;padding: 0 2rem;}
+.page-template-template-oito-erros main{display: grid;place-items: center;text-align: center;background-color:transparent!important;}
+#start-game{padding: 2rem;background-color: #66bd39;color: #fff;text-align: center;box-shadow: none;border: none;max-width: 210px;width: 100%;}
+.page-template-template-oito-erros main p{font-size: 1.4rem;line-height: 2.3rem;}
+.zoomImage8Erros{height: 100vh;width: 100vw;}
+.zoomImage8Erros .modal-content{height: 100%;padding: 0;width: 100%;}
+.zoomImage8Erros img{height: 100%;width: 100%;display: block;}
+.closeZoom{position: absolute;top: 40px;right: 40px;z-index: 999;background-color: #0a328b;color: #fff;}
+#blocoAcertos{display: none;}
+.blocoInformacoes{max-width: 880px;padding: 80px;margin: 0 auto;color: #fff;background-color: #002dac;}
+.modal{width: 100%!important;max-height:100%!important;border-radius:0!important;}
+.modal .close{position: absolute;top:20px;right:20px;}
+.mobile{display: none;}
+.term-fundicao .calendar,.term-usinagem .calendar,.term-montagem-de-motor .calendar,.term-5s .calendar,.term-palestra .calendar,.term-mmo .calendar,.term-lubrificacao-arrefecimento .calendar{display:none!important;}
+.term-mmo #box-escolha,.term-lubrificacao-arrefecimento #box-escolha,.term-mmo p.space-top,.term-lubrificacao-arrefecimento p.space-top{display:none!important;}
+.term-fundicao-ptr #box-escolha,.term-fundicao-ptr p.space-top,.term-usinagem-ptr #box-escolha,.term-usinagem-ptr p.space-top,.term-usinagem-ptr #box-escolha,.term-usinagem-ptr p.space-top{display:none!important;}
+.term-fundicao-ptr .calendar,.term-usinagem-ptr .calendar,.term-usinagem-ptr .calendar{display:none!important;}
+.term-segunda-feira #form-check,.term-terca-feira #form-check,.term-quarta-feira #form-check{display:none;}
+.term-sexta-feira .box-perguntas{display: none!important;}
+#box-escolha{display:none!important;}
+@media screen and (max-width:992px){
+    nav{height: auto;}
+    .date-info h4{font-size: 1.1rem;}
+    .five-grid{grid-template-columns: 1fr;}
+	.page-login,main{padding:0;}
+	.desktop-banner{display:none;}
+	.banner-top .mobile-banner{display:block;}
+	.infos h2{font-size:2rem;}
+	.contact-box p{max-width: 100%;}
+    .destkop{display: none;}
+    .mobile{display: block;}
+    .hide-on-med-and-down{display: grid!important;grid-template-columns: 1fr 1fr;padding: 0 1rem;}
+}
+@media screen and (min-width:992px){
+    nav{height: 252px;}
+}
+nav ul:not(.dropdown-content) > li > a.btn-large {
+	margin: 0 !important;
+}
+
+.hide-on-med-and-down {
+	display: flex;
+	gap: 10px;
+	margin: 10px 0 !important;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.hide-on-med-and-down li{
+    flex: 0 1 20%;
+    height: 67px;
+}
+
+.hide-on-med-and-down li a:not(.dropdown-content li a) {
+	background-color: #0a328b;
+    color: #fff !important;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    text-align: center;
+    justify-content: center;
+	border-radius: 4px !important;
+
+}
+.hide-on-med-and-down li a:not(.dropdown-content li a) img{
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    height: 100%;
+}

@@ -1,0 +1,590 @@
+/* ========================================
+   INSCRIÇÃO TREINAMENTO - ESTILOS
+   ======================================== */
+
+.inscricao-treinamento-page {
+    padding: 40px 0;
+    min-height: 70vh;
+}
+
+.inscricao-treinamento-page h4 {
+    font-weight: 700;
+    color: #0a328b;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+/* Form Wrapper */
+.inscricao-form-wrapper {
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 35px 40px;
+}
+
+/* Campos */
+.inscricao-field {
+    margin-bottom: 22px;
+    position: relative;
+}
+
+.inscricao-field > label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 8px;
+    position: static;
+    transform: none;
+    pointer-events: auto;
+}
+
+.inscricao-field input[type="text"],
+.inscricao-field select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+    background: #f9fafb;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    height: auto;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.inscricao-field input[type="text"]:read-only {
+    background: #e8ecef;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.inscricao-field select {
+    background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") no-repeat right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.inscricao-field select:focus,
+.inscricao-field input[type="text"]:focus {
+    border-color: #0a328b;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(10, 50, 139, 0.1);
+}
+
+/* Checkbox Group */
+.inscricao-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.inscricao-checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #e8ecef;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background 0.2s, color 0.2s;
+    user-select: none;
+}
+
+.inscricao-checkbox-group label:hover {
+    background: #d0d7dd;
+}
+
+.inscricao-checkbox-group input[type="radio"] {
+    accent-color: #0a328b;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.inscricao-checkbox-group label.checked-label {
+    background: #0a328b;
+    color: #fff;
+}
+
+/* Info Box Treinamento */
+.inscricao-info-box {
+    background: #f0f4ff;
+    border: 1px solid #c5d4f5;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 22px;
+    animation: fadeInBox 0.3s ease;
+}
+
+@keyframes fadeInBox {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #0a328b;
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+.info-label i {
+    margin-right: 4px;
+}
+
+.info-value {
+    font-weight: 500;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.vagas-badge {
+    background: #0a328b;
+    color: #fff;
+    padding: 3px 14px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.info-value .mes-tag {
+    display: inline-block;
+    background: #0a328b;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    margin: 2px 4px 2px 0;
+    font-weight: 500;
+}
+
+/* Botões */
+.inscricao-botoes {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.inscricao-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    flex: 1 1 0;
+    min-width: 160px;
+}
+
+.inscricao-btn:hover {
+    transform: translateY(-1px);
+}
+
+.inscricao-btn:active {
+    transform: translateY(0);
+}
+
+.btn-confirmar {
+    background: #2e7d32;
+    color: #fff;
+}
+.btn-confirmar:hover {
+    background: #256b28;
+}
+
+.btn-cadastros {
+    background: #0a328b;
+    color: #fff;
+}
+.btn-cadastros:hover {
+    background: #08276d;
+}
+
+.btn-sair {
+    background: #c62828;
+    color: #fff;
+}
+.btn-sair:hover {
+    background: #a12121;
+    color: #fff;
+}
+
+/* Mensagem */
+.inscricao-msg {
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+    padding: 14px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+}
+.inscricao-msg.sucesso {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+.inscricao-msg.erro {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+/* Painel de sucesso pós-inscrição */
+.painel-sucesso {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 50px 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    text-align: center;
+    animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.painel-sucesso .sucesso-icon {
+    font-size: 64px;
+    color: #2e7d32;
+    margin-bottom: 16px;
+    line-height: 1;
+}
+
+.painel-sucesso .sucesso-icon i {
+    font-size: 64px;
+}
+
+.painel-sucesso h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 10px;
+}
+
+.painel-sucesso p {
+    font-size: 1rem;
+    color: #555;
+    margin: 0 0 28px;
+}
+
+.painel-sucesso .inscricao-btn {
+    font-size: 1rem;
+    padding: 12px 32px;
+}
+
+/* ========================================
+   MODAL
+   ======================================== */
+
+.inscricao-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeInOverlay 0.2s ease;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.inscricao-modal {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 85vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    animation: slideInModal 0.3s ease;
+}
+
+@keyframes slideInModal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.inscricao-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 28px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f5f7fa;
+}
+
+.inscricao-modal-header h5 {
+    margin: 0;
+    font-weight: 700;
+    color: #0a328b;
+    font-size: 1.3rem;
+}
+
+.inscricao-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+.inscricao-modal-close:hover {
+    color: #c62828;
+}
+
+.inscricao-modal-body {
+    padding: 24px 28px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Tabela */
+.inscricao-tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inscricao-tabela thead th {
+    background: #0a328b;
+    color: #fff;
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.inscricao-tabela thead th:first-child {
+    border-radius: 6px 0 0 0;
+}
+.inscricao-tabela thead th:last-child {
+    border-radius: 0 6px 0 0;
+}
+
+.inscricao-tabela tbody td {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+.inscricao-tabela tbody tr:hover {
+    background: #f5f7fa;
+}
+
+.btn-cancelar-inscricao {
+    background: #c62828;
+    color: #fff;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+}
+.btn-cancelar-inscricao:hover {
+    background: #a12121;
+}
+
+.sem-inscricoes {
+    text-align: center;
+    color: #888;
+    padding: 30px 0;
+    font-size: 1rem;
+}
+
+/* Loading spinner */
+.inscricao-loading {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spinInscricao 0.6s linear infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+@keyframes spinInscricao {
+    to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   RESPONSIVO
+   ======================================== */
+
+@media screen and (max-width: 768px) {
+    .inscricao-treinamento-page {
+        padding: 20px 0;
+    }
+
+    .inscricao-treinamento-page h4 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+
+    .inscricao-form-wrapper {
+        padding: 24px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .inscricao-botoes {
+        flex-direction: column;
+    }
+
+    .inscricao-btn {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* Modal */
+    .inscricao-modal-overlay {
+        padding: 10px;
+        align-items: flex-end;
+    }
+
+    .inscricao-modal {
+        max-height: 90vh;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .inscricao-modal-header {
+        padding: 16px 20px;
+    }
+
+    .inscricao-modal-header h5 {
+        font-size: 1.1rem;
+    }
+
+    .inscricao-modal-body {
+        padding: 16px 20px;
+    }
+
+    /* Tabela responsiva - card layout */
+    .inscricao-tabela,
+    .inscricao-tabela thead,
+    .inscricao-tabela tbody,
+    .inscricao-tabela th,
+    .inscricao-tabela td,
+    .inscricao-tabela tr {
+        display: block;
+    }
+
+    .inscricao-tabela thead {
+        display: none;
+    }
+
+    .inscricao-tabela tbody tr {
+        background: #f9fafb;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        padding: 14px;
+    }
+
+    .inscricao-tabela tbody td {
+        padding: 6px 0;
+        border-bottom: none;
+        font-size: 0.88rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .inscricao-tabela tbody td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #0a328b;
+        margin-right: 10px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+    }
+
+    .inscricao-tabela tbody td:last-child {
+        justify-content: flex-end;
+        margin-top: 6px;
+    }
+
+    .info-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .inscricao-checkbox-group {
+        flex-direction: column;
+    }
+
+    .inscricao-checkbox-group label {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .inscricao-form-wrapper {
+        padding: 18px 14px;
+    }
+
+    .inscricao-field input[type="text"],
+    .inscricao-field select {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+    }
+
+    .inscricao-btn {
+        padding: 12px 16px;
+        font-size: 0.88rem;
+    }
+}

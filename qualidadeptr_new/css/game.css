@@ -1,0 +1,40 @@
+.canvas {
+    display: inline-block;
+    position: relative;
+    cursor: url('http://localhost/qualidadeptr/wp-content/uploads/2025/02/cursor.png'), auto;
+    overflow: hidden;
+}
+.marker {
+    width: 50px;
+    height: 50px;
+    background: gray;
+    position: absolute;
+    border-radius: 50%;
+}
+.marker.accept {
+    background: lightgreen;
+}
+.marker.reject {
+    background: red;
+}
+.target {
+    width: 50px;
+    height: 50px;
+    background: green;
+    position: absolute;
+    border-radius: 50%;
+}
+.cursor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 17px;
+    height: 25px;
+    opacity: 0;
+       background: url('http://localhost/qualidadeptr/wp-content/uploads/2025/02/cursor.png') center top no-repeat;
+       transition: opacity 0.2s linear;
+       z-index: 2;
+}
+.cursor.visible {
+    opacity: 1;
+}
